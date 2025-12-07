@@ -14,4 +14,9 @@ class Task extends Model
         'priority',
         'user_id',
     ] ;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
