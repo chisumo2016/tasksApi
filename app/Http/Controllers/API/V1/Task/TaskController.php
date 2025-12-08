@@ -37,7 +37,7 @@ class TaskController extends Controller
 
         return new TaskResource($task);
 
-       // return response()->json($task);
+        // return response()->json($task);
     }
 
     /**
@@ -45,7 +45,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return new TaskResource($task);
+        //return new TaskResource($task);
         //return response()->json($task);
     }
 
@@ -54,9 +54,7 @@ class TaskController extends Controller
      */
     public function update(UpdateRequest $request, Task $task)
     {
-        $data = $request->validated();
-
-        $task->update($data);
+        $task->update($request->validated());
 
         return new TaskResource($task);
     }

@@ -22,11 +22,11 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'sometimes|required|in:pending,in_progress,completed',
-            'due_date' => 'nullable|date',
-            'priority' => 'sometimes|required|integer|min:1|max:5',
+            'name' => 'sometimes|string|max:255',
+            'description' => 'sometimes|nullable|string',
+            'status' => 'sometimes|in:pending,in_progress,completed',
+            'due_date' => 'sometimes|nullable|date',
+            'priority' => 'sometimes|integer|min:1|max:5',
         ];
     }
 }
