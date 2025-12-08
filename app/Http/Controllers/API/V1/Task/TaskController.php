@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1\Task;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Task\StoreRequest;
 use App\Http\Requests\API\V1\Task\UpdateRequest;
+use App\Http\Resources\API\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::paginate(1);
 
-        return response()->json($tasks);
+        return TaskResource::collection($tasks);
+
+        //return response()->json($tasks);
     }
 
     /**
@@ -25,11 +28,16 @@ class TaskController extends Controller
      */
     public function store(StoreRequest $request)
     {
+
         $data = $request->validated();
+
+        //dd($data);
 
         $task = $request->user()->tasks()->create($data);
 
-        return response()->json($task);
+        return new TaskResource($task);
+
+       // return response()->json($task);
     }
 
     /**
@@ -37,7 +45,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        return response()->json($task);
+        return new TaskResource($task);
+        //return response()->json($task);
     }
 
     /**
@@ -49,7 +58,7 @@ class TaskController extends Controller
 
         $task->update($data);
 
-        return response()->json($task);
+        return new TaskResource($task);
     }
 
     /**
