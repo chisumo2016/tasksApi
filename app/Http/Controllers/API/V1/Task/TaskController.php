@@ -8,6 +8,7 @@ use App\Http\Requests\API\V1\Task\UpdateRequest;
 use App\Http\Resources\API\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class TaskController extends Controller
 {
@@ -16,7 +17,10 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::paginate(1);
+        $tasks = Cache::remember('tasks', 3600, function () {
+
+            return Task::all();
+        });
 
         return TaskResource::collection($tasks);
     }
