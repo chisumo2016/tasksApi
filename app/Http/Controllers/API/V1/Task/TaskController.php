@@ -19,8 +19,6 @@ class TaskController extends Controller
         $tasks = Task::paginate(1);
 
         return TaskResource::collection($tasks);
-
-        //return response()->json($tasks);
     }
 
     /**
@@ -29,15 +27,14 @@ class TaskController extends Controller
     public function store(StoreRequest $request)
     {
 
-        $data = $request->validated();
+       $data = $request->validated();
 
-        //dd($data);
+        $task= $request->user()->tasks()->create($data);
 
-        $task = $request->user()->tasks()->create($data);
+        return (new TaskResource($task))
+            ->response()
+            ->setStatusCode(200);
 
-        return new TaskResource($task);
-
-        // return response()->json($task);
     }
 
     /**
@@ -45,7 +42,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //return new TaskResource($task);
+        return new TaskResource($task);
+
         //return response()->json($task);
     }
 
@@ -56,7 +54,9 @@ class TaskController extends Controller
     {
         $task->update($request->validated());
 
-        return new TaskResource($task);
+        return (new TaskResource($task))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**

@@ -23,10 +23,6 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'description' => 'sometimes|nullable|string',
-            'status' => 'sometimes|in:pending,in_progress,completed',
-            'due_date' => 'sometimes|nullable|date',
-            'priority' => 'sometimes|integer|min:1|max:5',
         ];
     }
 }
