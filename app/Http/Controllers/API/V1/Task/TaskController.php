@@ -50,9 +50,9 @@ class TaskController extends Controller
     public function store(StoreRequest $request)
     {
 
-       $data = $request->validated();
+        $data = $request->validated();
 
-        $task= $request->user()->tasks()->create($data);
+        $task = $request->user()->tasks()->create($data);
 
         return (new TaskResource($task))
             ->response()
@@ -90,4 +90,28 @@ class TaskController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->query('search');
+
+        $query = Task::query();
+
+        if (!empty($search)) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        $tasks = $query->orderBy('created_at', 'desc')->paginate(20);
+
+        return TaskResource::collection($tasks);
+    }
 }
+
+//
+//$tasks = Cache::remember('tasks', 3600, function () {
+//
+//    return Task::all();
+//});
+//
+//return TaskResource::collection($tasks);
